@@ -15,7 +15,7 @@ RUN mvn clean package -DskipTests
 # ===============================
 # 2. Run stage
 # ===============================
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
 
 # Copy jar from build stage
