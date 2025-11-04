@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JobConnect</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        background-color: #f4f6f8;
+      }
+
+      nav {
+        background-color: #222;
+        padding: 12px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+      }
+
+      nav span {
+        color: #00bcd4;
+        font-size: 26px;
+        font-weight: bold;
+      }
+
+      nav a,
+      nav button {
+        color: white;
+        background: none;
+        border: none;
+        margin-left: 15px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      nav a:hover,
+      nav button:hover {
+        color: #00bcd4;
+      }
+
+      .hero {
+        background: url("/images/jobImg5.jpg") no-repeat center center/cover;
+        color: white;
+        text-align: center;
+        padding: 120px 20px;
+        background-blend-mode: overlay;
+        background-color: rgba(0, 0, 0, 0.67);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .hero h1 {
+        font-size: 52px;
+        font-weight: 700;
+        margin: 0;
+        letter-spacing: 1px;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+      }
+
+      .hero p {
+        font-size: 22px;
+        margin-top: 15px;
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+      }
+
+      .cards {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        margin: 50px auto;
+        flex-wrap: wrap;
+      }
+
+      .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        overflow: hidden;
+        transition: transform 0.3s;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+      .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: 200px;
+        background-color: #f8f9fa;
+        display: block;
+        margin: 0;
+      }
+
+      .card-content {
+        padding: 15px;
+      }
+
+      .card-content h3 {
+        margin: 0;
+        color: #333;
+      }
+
+      .card-content p {
+        color: #666;
+        font-size: 15px;
+      }
+
+      .quote-section {
+        text-align: center;
+        margin: 40px auto;
+        padding: 20px;
+        font-size: 20px;
+        color: #333;
+        width: 80%;
+        max-width: 800px;
+        font-style: italic;
+      }
+
+      .quote-author {
+        margin-top: 10px;
+        font-weight: bold;
+        color: #555;
+      }
+
+      /* Popup Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background: #fff;
+        border-radius: 10px;
+        padding: 30px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.3s ease-in-out;
+      }
+
+      .modal-content h2 {
+        text-align: center;
+        color: #333;
+      }
+
+      .modal-content input {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+
+      .modal-content button {
+        background-color: #00bcd4;
+        border: none;
+        color: white;
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .modal-content button:hover {
+        background-color: #0097a7;
+      }
+
+      .close-btn {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        color: #666;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 36px;
+        }
+        .hero p {
+          font-size: 18px;
+        }
+        .cards {
+          flex-direction: column;
+          align-items: center;
+        }
+        .card {
+          width: 20%;
+        }
+      }
+
+      nav {
+        background-color: #333;
+        padding: 12px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      nav span {
+        color: #00bcd4;
+        font-size: 26px;
+        font-weight: bold;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        margin-left: 18px;
+        font-size: 16px;
+        transition: color 0.3s, background-color 0.3s;
+        padding: 6px 12px;
+        border-radius: 6px;
+      }
+
+      .nav-links a:hover {
+        color: #00bcd4;
+      }
+
+      .nav-links .login-btn {
+        background-color: transparent;
+        border: 1px solid #00bcd4;
+        color: #00bcd4;
+        font-weight: 500;
+      }
+
+      .nav-links .login-btn:hover {
+        background-color: #00bcd4;
+        color: white;
+      }
+
+      .nav-links .signup-btn {
+        background-color: #00bcd4;
+        color: white;
+        font-weight: 500;
+        border: none;
+      }
+
+      .nav-links .signup-btn:hover {
+        background-color: #0097a7;
+      }
+
+      /* Responsive navbar for mobile */
+      @media (max-width: 768px) {
+        .nav-links {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        .nav-links a {
+          font-size: 14px;
+          margin: 5px;
+        }
+
+        nav span {
+          font-size: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <span>💼 JobConnect</span>
+      <div class="nav-links">
+        <a href="/login" class="login-btn">Login</a>
+        <a href="/signup" class="signup-btn">Sign Up</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <h1>Welcome to JobConnect 🚀</h1>
+      <p>
+        💫 “Connecting talent with opportunity — your success story starts
+        today!”
+      </p>
+    </div>
+
+    <div class="quote-section">
+      “Dream, dream, dream. Dreams transform into thoughts and thoughts result
+      in action.” — A.P.J. Abdul Kalam
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <img src="/images/jobImg1.jpg" alt="Post Jobs" />
+        <div class="card-content">
+          <h3>Find Work You’ll Love</h3>
+          <p>Connect with companies that value your talent and dedication.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="/images/jobImg2.jpg" alt="Find Jobs" />
+        <div class="card-content">
+          <h3>Hire Smart, Hire Fast</h3>
+          <p>
+            Streamline your hiring process and connect with the right candidates
+            easily.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="/images/jobImg3.jpg" alt="Grow Career" />
+        <div class="card-content">
+          <h3>Grow With Every Opportunity</h3>
+          <p>
+            Explore, connect, and take your career or company to the next level.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function openModal(id) {
+        document.getElementById(id).style.display = "flex";
+      }
+      function closeModal(id) {
+        document.getElementById(id).style.display = "none";
+      }
+      window.onclick = function (e) {
+        if (e.target.classList.contains("modal")) {
+          e.target.style.display = "none";
+        }
+      };
+    </script>
+  </body>
+</html>

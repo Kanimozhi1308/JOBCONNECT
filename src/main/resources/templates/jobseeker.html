@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JobConnect - Job Seeker Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- ✅ Separate CSS -->
+    <link rel="stylesheet" href="/css/jobseeker.css" />
+    <style>
+      body {
+        background-color: #f7f8fa;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .navbar {
+        background-color: #212529;
+      }
+      .container-flex {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+      }
+      .jobs-section {
+        width: 65%;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+      }
+      .apply-section {
+        width: 30%;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        display: none;
+      }
+      .job-item {
+        border-bottom: 1px solid #eee;
+        padding: 15px 0;
+      }
+      .job-item:last-child {
+        border-bottom: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">💼 JobConnect - Job Seeker </span>
+
+        <div class="nav-actions">
+          <a href="/" class="btn home-btn">Home</a>
+          <form th:action="@{/logout}" method="post" class="d-inline">
+            <button type="submit" class="btn logout-btn">Logout</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <div class="welcome-container text-center mt-3">
+      <h3>👋 Welcome, <span th:text="${userName}">User</span>!</h3>
+    </div>
+
+    <div class="container mt-4">
+      <!-- Search Bar -->
+      <form
+        class="d-flex mb-4 justify-content-center search-bar"
+        th:action="@{/jobseeker/search}"
+        method="get"
+      >
+        <input
+          type="text"
+          class="form-control me-2"
+          name="keyword"
+          placeholder="Search by title or skill"
+        />
+        <input
+          type="text"
+          class="form-control me-2"
+          name="location"
+          placeholder="Search by location"
+        />
+        <button class="btn btn-primary me-2">Search</button>
+        <a href="/jobseeker/search" class="btn btn-secondary">Clear</a>
+      </form>
+      <!-- Job search Results -->
+      <div th:if="${#lists.isEmpty(jobs)}" class="no-jobs-message">
+        No jobs found for your search.
+      </div>
+
+      <div class="dashboard-container">
+        <!-- Available Jobs -->
+        <div class="available-jobs">
+          <h4 class="section-title">Available Jobs</h4>
+          <div th:each="job : ${jobs}" class="job-card">
+            <div class="job-header">
+              <h5 th:text="${job.title}">Job Title</h5>
+              <span class="location-badge" th:text="${job.location}"
+                >Location</span
+              >
+            </div>
+            <p>
+              <strong>Deadline:</strong> <span th:text="${job.deadline}"></span>
+            </p>
+            <p th:text="${job.description}">Job Description</p>
+            <button
+              class="btn btn-primary btn-sm"
+              th:attr="onclick=|openApplyForm('${job.id}', '${job.title}', '${job.location}')|"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+
+        <!-- Applied Jobs -->
+        <div class="applied-jobs">
+          <h4 class="section-title">Applied Jobs</h4>
+          <ul id="appliedJobsList" class="applied-list"></ul>
+        </div>
+
+        <!-- Hidden field to pass userId -->
+        <input type="hidden" id="userId" th:value="${userId}" />
+      </div>
+
+      <!-- 🔹 Apply Job Popup Modal -->
+      <div class="apply-modal" id="applySection">
+        <div class="apply-modal-content">
+          <h4 class="mb-3 fw-bold text-center">Apply for Job</h4>
+          <form id="applyForm">
+            <input type="hidden" id="userId" th:value="${userId}" />
+            <input type="hidden" id="jobId" />
+
+            <div class="mb-2">
+              <label for="jobTitle" class="form-label">Job Title</label>
+              <input type="text" id="jobTitle" class="form-control" readonly />
+            </div>
+
+            <div class="mb-2">
+              <label for="jobLocation" class="form-label">Location</label>
+              <input
+                type="text"
+                id="jobLocation"
+                class="form-control"
+                readonly
+              />
+            </div>
+
+            <div class="mb-2">
+              <label for="applicantName" class="form-label">Full Name</label>
+              <input
+                type="text"
+                id="applicantName"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="mb-2">
+              <label for="applicantEmail" class="form-label">Email</label>
+              <input
+                type="email"
+                id="applicantEmail"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="applicantPhone" class="form-label"
+                >Phone Number</label
+              >
+              <input
+                type="text"
+                id="applicantPhone"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 mb-2">
+              Submit Application
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary w-100"
+              onclick="closeApplyForm()"
+            >
+              Cancel
+            </button>
+
+            <div id="responseMsg" class="mt-3 fw-bold text-center"></div>
+          </form>
+
+          <!-- ✅ Success Message -->
+          <div th:if="${errorMessage}" class="alert alert-danger text-center">
+            <p th:text="${errorMessage}"></p>
+          </div>
+
+          <div
+            th:if="${successMessage}"
+            class="alert alert-success text-center"
+          >
+            <p th:text="${successMessage}"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function openApplyForm(jobId, title, location) {
+        document.getElementById("applySection").style.display = "block";
+        document.getElementById("jobId").value = jobId;
+        document.getElementById("jobTitle").value = title;
+        document.getElementById("jobLocation").value = location;
+        const section = document.getElementById("applySection");
+
+        section.style.display = "flex"; // Show modal
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function closeApplyForm() {
+        document.getElementById("applySection").style.display = "none";
+        document.getElementById("applyMessage").textContent = "";
+        form.reset();
+      }
+
+      // 🚀 Handle form submission via REST API
+      document
+        .getElementById("applyForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const userId = document.getElementById("userId").value;
+          const jobId = document.getElementById("jobId").value;
+          const name = document.getElementById("applicantName").value;
+          const email = document.getElementById("applicantEmail").value;
+          const phone = document.getElementById("applicantPhone").value;
+
+          try {
+            const response = await fetch("/api/applications/apply", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: `userId=${userId}&jobId=${jobId}&name=${encodeURIComponent(
+                name
+              )}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(
+                phone
+              )}`,
+            });
+
+            const message = await response.text();
+            const msgElement = document.getElementById("responseMsg");
+
+            if (message.includes("successfully")) {
+              msgElement.style.color = "green";
+              msgElement.textContent = message;
+
+              // ✅ Add job instantly to Applied Jobs list
+              const appliedJobsList =
+                document.getElementById("appliedJobsList");
+              const li = document.createElement("li");
+              li.innerHTML = `
+            <strong>${document.getElementById("jobTitle").value}</strong>
+            (${document.getElementById("jobLocation").value})<br>
+            <span class="badge bg-info text-dark">Status: Applied</span><br>
+            <small>Applied on: ${new Date().toLocaleDateString()}</small>
+        `;
+              appliedJobsList.appendChild(li);
+
+              // Reset and close the modal
+              event.target.reset();
+              setTimeout(() => closeApplyForm(), 800);
+            } else {
+              msgElement.style.color = "red";
+              msgElement.textContent = message;
+            }
+          } catch (error) {
+            console.error("Error submitting application:", error);
+            document.getElementById("responseMsg").textContent =
+              "Something went wrong. Please try again.";
+          }
+        });
+
+      //for applied jobs
+      async function loadAppliedJobs() {
+        const userIdElement = document.getElementById("userId");
+        if (!userIdElement) return;
+
+        const userId = userIdElement.value;
+        const appliedJobsContainer = document.getElementById("appliedJobsList");
+
+        if (!userId) {
+          appliedJobsContainer.innerHTML =
+            "<li>Please log in to see your applications.</li>";
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            `/api/applications/user/${userId}/applied-jobs`
+          );
+          if (!response.ok) {
+            appliedJobsContainer.innerHTML =
+              "<li>Error loading your applications.</li>";
+            return;
+          }
+
+          const jobs = await response.json();
+          appliedJobsContainer.innerHTML = "";
+
+          if (jobs.length === 0) {
+            appliedJobsContainer.innerHTML = "<li>No applications yet.</li>";
+            return;
+          }
+
+          jobs.forEach((job) => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                                  <strong>${job.jobTitle}</strong> (${
+              job.jobLocation
+            }) <br>
+                                  <span class="badge bg-info text-dark">Status: ${
+                                    job.status
+                                  }</span><br>
+                                  <small>Applied on: ${new Date(
+                                    job.appliedDate
+                                  ).toLocaleDateString()}</small>
+                              `;
+            appliedJobsContainer.appendChild(li);
+          });
+        } catch (error) {
+          console.error("Error fetching applied jobs:", error);
+          appliedJobsContainer.innerHTML = "<li>Error loading data.</li>";
+        }
+      }
+
+      // ✅ Load automatically when page opens
+      document.addEventListener("DOMContentLoaded", loadAppliedJobs);
+    </script>
+  </body>
+</html>

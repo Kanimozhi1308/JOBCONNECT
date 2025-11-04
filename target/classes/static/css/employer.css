@@ -1,0 +1,296 @@
+/* 🌟 Overall Page Styling */
+body {
+  background: linear-gradient(135deg, #f3f6ff, #e8ecff);
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  min-height: 90vh;
+}
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+  }
+
+/* 🌟 Navbar */
+.navbar {
+  background: linear-gradient(90deg, #35a7d3, #184169);
+  padding: 12px 25px;
+}
+
+.navbar-brand {
+  color: white !important;
+  font-weight: bold;
+  font-size: 22px;
+  width: 86%;            /* reduces overall width */
+  margin: 0 auto;         /* centers it horizontally */
+  border-radius: 10px; 
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-actions .btn {
+  border-radius: 3px;
+  font-weight: 450;
+  padding: 6px 15px;
+  margin-left: 10px;
+  transition: all 0.3s ease;
+}
+
+.home-btn {
+  background-color: transparent;
+  border: 1px solid white;
+  color:white; 
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.home-btn:hover {
+  background-color: #198754;;
+  color: white;
+}
+
+/* Logout Button */
+.logout-btn {
+  background-color: #d63031;
+  color: white;
+  border: none;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #d63031;
+}
+
+/* 🌟 Dashboard Layout */
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5.5rem;
+}
+
+/* 🌟 Cards */
+.card {
+  border:#0dcaf0;
+  border-radius: 25px;
+  box-shadow: 0 4px 12px oklab(77.228% -0.08433 -0.09558 / 0.1);
+  background: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 20px #41b6e726;
+}
+
+  .card h3 {
+    font-weight: 550;
+    color: #083059;
+    text-align: center;
+    margin-bottom: 1rem;
+    display: inline-block;
+    padding-bottom: 6px;
+  }
+
+/* 🌟 Post Job Card */
+#addJobForm {
+  margin-top: 0 rem;
+}
+
+#addJobForm .form-control {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  transition: border-color 0.3s;
+}
+
+#addJobForm .form-control:focus {
+  border-color: #00bcd4;
+  box-shadow: 0 0 5px rgba(#198754);
+}
+
+#addJobForm button {
+  background-color: #198754;
+  border: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+#addJobForm button:hover {
+  background-color: #198754;
+}
+
+/* 🌟 Scrollable List Containers */
+.scrollable {
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background-color: #00bcd4;
+  border-radius: 5px;
+}
+
+.scrollable {
+  max-height: 400px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+
+/* 🌟 Job & Application Items */
+.job-item,
+.application-item {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 7px solid #00bcd4;
+  transition: all 0.3s ease;
+}
+
+.job-item:hover,
+.application-item:hover {
+  background: #f1fbfc;
+  transform: scale(1.02);
+}
+
+.job-item h5,
+.application-item h5 {
+  font-weight: 600;
+  color: #2d3436;
+}
+
+.job-item p,
+.application-item p {
+  margin: 5px 0;
+  font-size: 0.95rem;
+  color: #2e2d2d;
+}
+
+/* 🌟 Buttons inside cards */
+.btn-warning {
+  background-color: #fbbf51;
+  border: none;
+}
+
+.btn-warning:hover {
+  background-color: #fbbf51;
+}
+
+.btn-danger {
+  background-color: #d63031;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #d63031;
+}
+
+.btn-success {
+  background-color: #00bcd4;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #0dcaf0;
+}
+
+/* 🌟 Responsive Design */
+@media (max-width: 992px) {
+  .dashboard-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .col-md-4 {
+    width: 90%;
+  }
+}
+
+
+      .welcome-container {
+        color: #121212;
+        padding: 5px 20px;
+        text-align: center;
+        font-weight: 600;
+        font-size:larger;
+        margin-bottom: 10px;
+      }
+
+       .container.mt-4 {
+        background-color: white; /* ✅ Light blue container background */
+        border-radius: 12px;
+        padding: 20 px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      body {
+        background-color: #f8f9fa; /* Page background - light gray */
+      }
+
+      .container.mt-4 {
+  max-width: 1500px;  
+  margin: 20px auto;   /* Center it horizontally and add top spacing */
+  background-color: #e3f0fa;
+  border-radius: 12px;
+  padding: 23px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.col-md-4 .card {
+  width: 480px; /* 🔹 Increased width */
+  min-height: 650px; /* 🔹 Increased height */
+  margin: 0 auto; /* Center the card */
+  border-radius: 25px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(36, 101, 147, 0.2);
+  transition: all 0.3s ease-in-out;
+  padding: 30px;
+}
+
+.col-md-4 .card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(36, 101, 147, 0.25);
+}
+
+#addJobForm .form-control {
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 12px 15px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease;
+}
+
+#addJobForm .form-control:focus {
+  border-color: #00bcd4;
+  box-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
+}
+
+#addJobForm button {
+  background: linear-gradient(90deg, #198754, #2ecc71);
+  color: white;
+  border: none;
+  font-weight: 600;
+  padding: 10px 0;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+#addJobForm button:hover {
+  background: linear-gradient(90deg, #2ecc71, #198754);
+  transform: scale(1.03);
+}

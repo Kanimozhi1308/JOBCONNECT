@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employer Dashboard - JobConnect</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!--CSS -->
+    <link rel="stylesheet" href="/css/employer.css" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark bg-dark mb-4">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">💼 JobConnect - Employer</span>
+
+        <div class="nav-actions">
+          <a href="/" class="btn home-btn">Home</a>
+          <form th:action="@{/logout}" method="post" class="d-inline">
+            <button type="submit" class="btn logout-btn">Logout</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <!-- Welcome Message -->
+    <div class="welcome-container text-center mt-3">
+      <h3>👋 Welcome, <span th:text="${userName}">userName</span>!</h3>
+    </div>
+
+    <!-- Success & Error Alerts -->
+    <div class="container mt-3" style="max-width: 700px">
+      <div th:if="${param.success}" class="alert alert-success text-center">
+        ✅ Application deleted successfully!
+      </div>
+      <div th:if="${param.error}" class="alert alert-danger text-center">
+        ❌ Application not found or already deleted.
+      </div>
+    </div>
+
+    <div class="dashboard-container">
+      <div class="row g-4">
+        <!-- 🔹 Post Job Card -->
+        <div class="col-md-4">
+          <div class="card p-4">
+            <h3>Post a New Job</h3>
+            <form id="addJobForm">
+              <div class="mb-3">
+                <label class="form-label">Job Title</label>
+                <input
+                  type="text"
+                  id="jobTitle"
+                  class="form-control"
+                  placeholder="Enter job title"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea
+                  id="jobDescription"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Enter job description"
+                  required
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Location</label>
+                <input
+                  type="text"
+                  id="jobLocation"
+                  class="form-control"
+                  placeholder="Enter location"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Salary (₹)</label>
+                <input
+                  type="number"
+                  id="jobSalary"
+                  class="form-control"
+                  placeholder="Enter salary"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Application Deadline</label>
+                <input
+                  type="date"
+                  id="jobDeadline"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <input type="hidden" id="employerId" th:value="${employerId}" />
+              <button type="submit" class="btn btn-success w-100">
+                Post Job
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- 🔹 My Jobs Card -->
+        <div class="col-md-4">
+          <div class="card p-4">
+            <h3>My Jobs</h3>
+            <div class="scrollable">
+              <div id="jobList" class="scrollable">
+                <div th:each="job : ${jobs}" class="job-item">
+                  <h5 th:text="${job.title}"></h5>
+                  <p>
+                    <strong>Location:</strong>
+                    <span th:text="${job.location}"></span>
+                  </p>
+                  <p th:text="${job.description}"></p>
+                  <p>
+                    <strong>Salary:</strong> ₹<span
+                      th:text="${job.salary}"
+                    ></span>
+                  </p>
+                  <p>
+                    <strong>Deadline:</strong>
+                    <span th:text="${job.deadline}"></span>
+                  </p>
+                  <form
+                    th:action="@{/employer/update}"
+                    method="post"
+                    class="d-inline"
+                  >
+                    <input type="hidden" name="jobId" th:value="${job.id}" />
+                    <button class="btn btn-warning btn-sm">Update</button>
+                  </form>
+                  <form th:action="@{/employer/delete}" method="post">
+                    <input type="hidden" name="jobId" th:value="${job.id}" />
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      th:onclick="|deleteJob([[${job.id}]])|"
+                    >
+                      Delete
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🔹 Applications Card -->
+        <div class="col-md-4">
+          <div class="card p-4">
+            <h3>Applications</h3>
+            <div class="scrollable">
+              <div th:if="${applications.isEmpty()}">
+                <p>No applications yet.</p>
+              </div>
+              <div th:each="app : ${applications}" class="application-item">
+                <h5 th:text="${app.jobTitle}"></h5>
+                <p>
+                  <strong>Applicant:</strong>
+                  <span th:text="${app.applicantName}"></span>
+                </p>
+                <p>
+                  <strong>Email:</strong>
+                  <span th:text="${app.applicantEmail}"></span>
+                </p>
+                <p>
+                  <strong>Phone:</strong>
+                  <span th:text="${app.applicantPhone}"></span>
+                </p>
+                <form th:action="@{/employer/application-status}" method="POST">
+                  <input
+                    type="hidden"
+                    name="applicationId"
+                    th:value="${app.id}"
+                  />
+                  <select name="status" class="form-select form-select-sm mb-2">
+                    <option th:selected="${app.status == 'Applied'}">
+                      Applied
+                    </option>
+                    <option th:selected="${app.status == 'Viewed'}">
+                      Viewed
+                    </option>
+                    <option th:selected="${app.status == 'Verified'}">
+                      Verified
+                    </option>
+                  </select>
+                  <button class="btn btn-success btn-sm w-100">
+                    Update Status
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- row -->
+    </div>
+    <!-- container -->
+
+    <script src="/js/employer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

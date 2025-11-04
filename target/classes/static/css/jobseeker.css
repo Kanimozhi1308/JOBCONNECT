@@ -1,0 +1,302 @@
+/* font */
+ body {
+    font-family: "Poppins", sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+  }
+
+
+
+  /* 🔹 Center the search bar */
+.search-bar {
+  max-width: 700px;  /* Reduce total length */
+  margin: 0 auto;    /* Center horizontally */
+}
+
+/* 🔹 Make input boxes smaller and uniform */
+.search-bar .form-control {
+  width: 200px;      /* Set fixed width for input fields */
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+/* 🔹 Adjust button spacing */
+.search-bar .btn {
+  border-radius: 8px;
+  padding: 6px 16px;
+}
+
+/* 🔹 Optional: add hover effects */
+.search-bar .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.search-bar .btn-secondary:hover {
+  background-color: #6c757d;
+}
+
+/* Search message */
+.no-jobs-message {
+  background-color: #e9f4ff;   /* Light blue background */
+  color: #004085;              /* Dark blue text */
+  border: 1px solid #b8daff;   /* Subtle border */
+  border-radius: 10px;
+  padding: 15px 25px;
+  max-width: 500px;
+  margin: 50px auto;           /* Centers horizontally */
+  font-size: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.8s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(-10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+
+.navbar {
+  background: linear-gradient(90deg, #35a7d3, #184169);
+  padding: 12px 25px;
+}
+
+.navbar-brand {
+  color: white !important;
+  font-weight: bold;
+  font-size: 22px;
+  width: 86%;            /* reduces overall width */
+  margin: 0 auto;         /* centers it horizontally */
+  border-radius: 10px; 
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Home Button */
+.home-btn {
+  background-color: transparent;
+  border: 1px solid white;
+  color:white; 
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.home-btn:hover {
+  background-color: #198754;;
+  color: white;
+}
+
+/* Logout Button */
+.logout-btn {
+  background-color: #d63031;
+  color: white;
+  border: none;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #d63031;
+}
+
+/* Apply form */
+/* 🔹 Popup background overlay */
+.apply-modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.4s ease;
+}
+
+/* 🔹 Popup content box */
+.apply-modal-content {
+  background-color: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+  padding: 25px 30px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: slideUp 0.4s ease;
+}
+
+/* 🔹 Close button */
+.close-btn {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  border: none;
+  background: none;
+  font-size: 1.8rem;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #e74c3c;
+}
+
+/* 🔹 Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.apply-modal-content .form-label {
+  color: #000; 
+  font-weight: 700; /* bolder */
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+}
+
+
+
+/* After */
+/* ========== Dashboard Layout ========== */
+.dashboard-container {
+  display: flex;
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.available-jobs {
+  flex: 2;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  animation: fadeIn 0.6s ease;
+}
+
+.applied-jobs {
+  flex: 1;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  animation: fadeIn 0.8s ease;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 1.7rem;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #323030;
+}
+
+/* ========== Available Jobs Card ========== */
+.job-card {
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+  transition: all 0.3s ease;
+}
+
+.job-card:hover {
+  background-color: #f9fcff;
+  transform: translateY(-2px);
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.location-badge {
+  background: #e3f2fd;
+  color: #1976d2;
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* ========== Applied Jobs List ========== */
+.applied-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.applied-list li {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 12px 15px;
+  margin-bottom: 12px;
+  border-left: 4px solid #00bcd4;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.applied-list li:hover {
+  background: #e9f7ff;
+  transform: translateY(-2px);
+}
+
+
+ .container.mt-4 {
+        background-color: #e3f2fd; /* ✅ Light blue container background */
+        border-radius: 12px;
+        padding: 20 px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      body {
+        background-color: #f8f9fa; /* Page background - light gray */
+      }
+
+.container.mt-4 {
+  max-width: 1500px;  
+  margin: 20px auto;   /* Center it horizontally and add top spacing */
+  background-color: #e3f0fa;
+  border-radius: 12px;
+  padding: 23px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
